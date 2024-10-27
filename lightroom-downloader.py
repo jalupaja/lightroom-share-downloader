@@ -15,6 +15,10 @@ link = input(": ")
 # CONFIG
 export_file_type = ".jpeg"
 output_folder = "output"
+# wait time for the first 3 images (Page loading is often slower in the beginning)
+wait_time_start = 2.5
+# wait time for the all other images
+wait_time_later = 0.5
 
 
 def parse_url(url):
@@ -92,7 +96,10 @@ while True:
     while True:
         divs, image_div = wait_for_first_image("LoupeImage")
         # Wait for better image quality
-        time.sleep(2.5)
+        if export_name_counter <= 3:
+            time.sleep(wait_time_start)
+        else:
+            time.sleep(wait_time_later)
         try:
             url = image_div.value_of_css_property("background-image")[5:-2]
         except:
